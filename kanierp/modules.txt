@@ -12,7 +12,7 @@ Assets
 Portal
 Maintenance
 Regional
-Kanivin Integrations
+kanierp integrations
 Quality Management
 Communication
 Telephony
