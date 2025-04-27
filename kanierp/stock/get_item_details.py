@@ -1084,14 +1084,15 @@ def get_price_list_rate_for(args, item_code):
 
 	item_price_data = 0
 	price_list_rate = get_item_price(item_price_args, item_code)
-	 # If no exact match found, check parent territories
-    if not price_list_rate and args.get("territory"):
-        parent_territories = get_parent_territories(args.get("territory"))
-        for parent_territory in parent_territories:
-            item_price_args["territory"] = parent_territory
-            price_list_rate = get_item_price(item_price_args, item_code)
-            if price_list_rate:
-                break  # found a matching price, exit loop
+	# If no exact match found, check parent territories
+	if not price_list_rate and args.get("territory"):
+		parent_territories = get_parent_territories(args.get("territory"))
+		for parent_territory in parent_territories:
+			item_price_args["territory"] = parent_territory
+			price_list_rate = get_item_price(item_price_args, item_code)
+			if price_list_rate:
+				break  # found a matching price, exit loop
+
 				
 	if price_list_rate:
 		desired_qty = args.get("qty")
