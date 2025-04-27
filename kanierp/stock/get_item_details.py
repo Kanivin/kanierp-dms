@@ -1063,6 +1063,7 @@ def get_batch_based_item_price(params, item_code) -> float:
 
 def get_price_list_rate_for(args, item_code):
 	"""
+	:param territory: link to territory DocType
 	:param customer: link to Customer DocType
 	:param supplier: link to Supplier DocType
 	:param price_list: str (Standard Buying or Standard Selling)
@@ -1073,6 +1074,7 @@ def get_price_list_rate_for(args, item_code):
 	item_price_args = {
 		"item_code": item_code,
 		"price_list": args.get("price_list"),
+		"territory": args.get("territory"),
 		"customer": args.get("customer"),
 		"supplier": args.get("supplier"),
 		"uom": args.get("uom"),
@@ -1082,6 +1084,15 @@ def get_price_list_rate_for(args, item_code):
 
 	item_price_data = 0
 	price_list_rate = get_item_price(item_price_args, item_code)
+	 # If no exact match found, check parent territories
+    if not price_list_rate and args.get("territory"):
+        parent_territories = get_parent_territories(args.get("territory"))
+        for parent_territory in parent_territories:
+            item_price_args["territory"] = parent_territory
+            price_list_rate = get_item_price(item_price_args, item_code)
+            if price_list_rate:
+                break  # found a matching price, exit loop
+				
 	if price_list_rate:
 		desired_qty = args.get("qty")
 		if desired_qty and check_packing_list(price_list_rate[0][0], desired_qty, item_code):
@@ -1542,3 +1553,14 @@ def get_blanket_order_details(args):
 		blanket_order_details = blanket_order_details[0] if blanket_order_details else ""
 
 	return blanket_order_details
+
+def get_parent_territories(child_territory):
+    parents = []
+    while child_territory:
+        parent = frappe.db.get_value("Territory", child_territory, "parent_territory")
+        if parent:
+            parents.append(parent)
+            child_territory = parent
+        else:
+            break
+    return parents

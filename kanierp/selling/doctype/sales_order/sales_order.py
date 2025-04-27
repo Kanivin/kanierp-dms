@@ -843,11 +843,12 @@ def make_material_request(source_name, target_doc=None):
 			target.item_code, target.warehouse, source_parent.company, True
 		).get("actual_qty", 0)
 
-		args = target.as_dict().copy()
+		args = target.as_dict().copy()	
 		args.update(
 			{
 				"company": source_parent.get("company"),
 				"price_list": frappe.db.get_single_value("Buying Settings", "buying_price_list"),
+				"territory": frappe.db.get_value("Customer", source_parent.customer, "territory"),
 				"currency": source_parent.get("currency"),
 				"conversion_rate": source_parent.get("conversion_rate"),
 			}

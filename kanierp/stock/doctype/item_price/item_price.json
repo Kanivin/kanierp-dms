@@ -17,6 +17,7 @@
   "item_description",
   "price_list_details",
   "price_list",
+  "territory",
   "customer",
   "supplier",
   "batch_no",
@@ -110,6 +111,17 @@
    "reqd": 1,
    "search_index": 1
   },
+  {
+    "fieldname": "territory",
+    "fieldtype": "Link",
+    "in_global_search": 1,
+    "in_list_view": 1,
+    "in_standard_filter": 1,
+    "label": "Territory",
+    "options": "Territory",
+    "reqd": 1,
+    "search_index": 1
+   },
   {
    "bold": 1,
    "depends_on": "eval:doc.selling == 1",
