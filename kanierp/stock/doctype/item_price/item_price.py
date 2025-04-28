@@ -95,6 +95,7 @@ class ItemPrice(Document):
 			"uom",
 			"valid_from",
 			"valid_upto",
+			"territory",
 			"customer",
 			"supplier",
 			"batch_no",
